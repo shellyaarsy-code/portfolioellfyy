@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Portfolio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* RESET */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* BASE */
+body {
+  font-family: 'Inter', sans-serif;
+  background: #03081A;
+  color: #E0E7FF;
+  overflow-x: hidden;
+}
+
+.container { padding: 40px 60px; margin: auto; }
+
+/* ===================================
+   GLOBAL ENTRANCE ANIMATION
+=================================== */
+@keyframes softFadeUp {
+  0% { opacity: 0; transform: translateY(40px) scale(.96); filter: blur(6px); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+@keyframes softFadeRight {
+  0% { opacity: 0; transform: translateX(-40px) scale(.95); filter: blur(5px); }
+  100% { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+}
+
+/* ===================================
+   HEADER
+=================================== */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+  opacity: 0;
+  animation: softFadeUp 1.2s ease forwards;
+}
+
+.brand {
+  font-weight: 800;
+  color: #6bc4ff;
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+}
+
+nav a {
+  color: #AAB4C8;
+  margin-left: 25px;
+  text-decoration: none;
+  transition: .3s;
+  font-weight: 500;
+  position: relative;
+}
+
+nav a:hover {
+  color: #00C6FF;
+  transform: translateY(-3px);
+}
+
+nav a::after {
+  content: "";
+  width: 0;
+  height: 2px;
+  background: #00C6FF;
+  position: absolute;
+  left: 0; bottom: -5px;
+  transition: .3s;
+}
+
+nav a:hover::after { width: 100%; }
+
+/* ===================================
+   HERO GRID
+=================================== */
+.hero {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 40px;
+  position: relative;
+}
+
+/* ===================================
+   MULTI-LAYER BACKGROUND
+=================================== */
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
+  z-index: -1;
+  filter: blur(80px);
+  opacity: .28;
+}
+
+.hero::before {
+  background: radial-gradient(circle, rgba(0,160,255,.4), transparent 70%);
+  animation: bgDrift1 22s ease-in-out infinite;
+}
+.hero::after {
+  background: radial-gradient(circle, rgba(165,94,234,.4), transparent 75%);
+  animation: bgDrift2 28s ease-in-out infinite;
+}
+
+@keyframes bgDrift1 {
+  0% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(8%,10%) scale(1.2); }
+  100% { transform: translate(0,0) scale(1); }
+}
+@keyframes bgDrift2 {
+  0% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(-10%,5%) scale(1.15); }
+  100% { transform: translate(0,0) scale(1); }
+}
+
+/* ===================================
+   HERO TEXT
+=================================== */
+.hero-content h1 {
+  font-size: 4.5rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  opacity: 0;
+  animation: softFadeRight 1.2s ease forwards;
+}
+
+/* HOLOGRAM TEXT */
+.text-gradient {
+  font-size: 1.2rem;
+  background: linear-gradient(90deg, #00C6FF, #A55EEA, #00C6FF);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  opacity: 0;
+  animation:
+    softFadeRight 1.3s ease forwards .2s,
+    holoShift 7s linear infinite;
+}
+
+@keyframes holoShift {
+  0% { background-position: 0% 0%; opacity: .8; }
+  50% { background-position: 100% 40%; opacity: 1; }
+  100% { background-position: 0% 0%; opacity: .8; }
+}
+
+.hero-content p:not(.text-gradient) {
+  color: #9AA8C4;
+  max-width: 550px;
+  opacity: 0;
+  animation: softFadeRight 1.4s ease forwards .35s;
+}
+
+/* ===================================
+   BUTTON — LIQUID EFFECT
+=================================== */
+.hero-button {
+  margin-top: 24px;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 700;
+  border: 1px solid #00C6FF;
+  background: linear-gradient(90deg, #00C6FF, #A55EEA);
+  background-size: 300%;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  transition: .4s ease;
+}
+
+.hero-button::before,
+.hero-button::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: radial-gradient(circle, rgba(255,255,255,.3), transparent 70%);
+  transform: scale(0);
+  transition: .5s;
+}
+
+.hero-button:hover {
+  transform: translateY(-6px) scale(1.06);
+  box-shadow: 0 12px 40px rgba(0,200,255,.4);
+}
+
+.hero-button:hover::before { transform: scale(1.2); }
+.hero-button:hover::after { transform: scale(1.5); opacity: .4; }
+
+/* ===================================
+   PROJECTS — INFINITE SCROLL
+=================================== */
+.projects { margin-top: 40px; }
+.projects-title { color: #AAB4C8; margin-bottom: 20px; }
+
+/* scroll-track wraps duplicated content for seamless infinity */
+.project-row {
+  display: flex;
+  gap: 25px;
+  overflow: hidden;
+}
+
+.scroll-track {
+  display: flex;
+  gap: 25px;
+  width: max-content;
+  animation: infiniteScroll 19s linear infinite;
+  filter: drop-shadow(0 0 12px rgba(0,200,255,.25));
+  transition: .3s;
+}
+
+/* pause scroll on hover */
+.project-row:hover .scroll-track {
+  animation-play-state: paused;
+}
+
+/* infinite scroll keyframes */
+@keyframes infiniteScroll {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.project {
+  width: 300px;
+  height: 250px;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255,255,255,.05);
+  transform: perspective(900px);
+  transition: .45s ease;
+  opacity: 0;
+  animation: softFadeUp 1s ease forwards;
+}
+
+.project:hover {
+  transform: perspective(900px) rotateX(10deg) rotateY(-10deg) scale(1.1);
+  box-shadow: 0 25px 45px rgba(0,0,0,.55);
+}
+
+.project::after {
+  content: "";
+  position: absolute;
+  top: -150%;
+  left: -150%;
+  width: 300%;
+  height: 300%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,.25), transparent);
+  transition: .8s ease;
+}
+
+.project:hover::after {
+  top: -10%;
+  left: -10%;
+}
+
+.project-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===================================
+   PROFILE CARD — ORBIT + BREATH + FLOAT
+=================================== */
+.profile-card {
+  padding: 30px 20px;
+  background: linear-gradient(135deg,#1f1a35,#10162f);
+  border-radius: 25px;
+  border: 1px solid rgba(255,255,255,.08);
+  text-align: center;
+  position: sticky;
+  top: 40px;
+  animation: deepBreath 6s ease-in-out infinite;
+}
+
+@keyframes deepBreath {
+  0% { transform: scale(1); box-shadow: 0 0 18px rgba(0,160,255,.2); }
+  50% { transform: scale(1.04); box-shadow: 0 0 35px rgba(0,160,255,.35); }
+  100% { transform: scale(1); box-shadow: 0 0 18px rgba(0,160,255,.2); }
+}
+
+.profile-card::before {
+  content: "";
+  position: absolute;
+  top: -13px;
+  left: -13px;
+  width: 106%;
+  height: 106%;
+  border-radius: 25px;
+  border: 1px dashed rgba(0,200,255,.35);
+  animation: orbitRing 8s linear infinite;
+}
+
+@keyframes orbitRing {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.profile-card img {
+  width: 140px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 3px solid #03081A;
+  transition: .5s;
+}
+
+.profile-card img:hover {
+  transform: scale(1.09) rotate(-3deg);
+}
+
+/* ===================================
+   EXPERTISE ICONS — ADVANCED ORBIT
+=================================== */
+.expertise-list {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.tool {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00C6FF, #A55EEA);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  animation:
+    orbitFloat 3.5s ease-in-out infinite,
+    swing 6s ease-in-out infinite;
+  transition: .3s;
+}
+
+@keyframes orbitFloat {
+  0% { transform: translateY(0) scale(.95); }
+  50% { transform: translateY(-6px) scale(1.05); }
+  100% { transform: translateY(0) scale(.95); }
+}
+
+@keyframes swing {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(1.3); }
+  100% { filter: brightness(1); }
+}
+
+.tool:hover {
+  transform: scale(1.25) translateY(-9px) rotate(8deg);
+  box-shadow: 0 0 40px rgba(0,200,255,.7);
+}
+
+/* ===================================
+   FOOTER
+=================================== */
+footer {
+  margin-top: 60px;
+  text-align: center;
+  color: #5A6478;
+  opacity: 0;
+  animation: softFadeUp 1.6s ease forwards 1.2s;
+}
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+@media (max-width: 900px) {
+  .container { padding: 30px 22px; }
+  .hero { grid-template-columns: 1fr; text-align: center; }
+  .profile-card { position: relative; }
+  .project-row { overflow-x: auto; }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<!------------ HEADER ------------>
+<header>
+  <div class="brand">MY PORTFOLIO</div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Collection</a>
+    <a href="#">About me</a>
+    <a href="#">Favorite</a>
+  </nav>
+</header>
+
+<!------------ HERO GRID ------------>
+<main class="hero">
+
+  <div class="hero-content">
+    <h1>Junior Programmer</h1>
+    <p class="text-gradient">Typography | Photography | Digital Art</p>
+
+    <p>Nama saya Shellfya Nurul Arshy dari 10 PPLG 2, saya merupakan seorang junior programmer yang suka mencoba berbagai hal.</p>
+
+    <button class="hero-button">Contact Now</button>
+
+    <!------------ PROJECTS ------------>
+    <section class="projects">
+      <h4 class="projects-title"> My Project </h4>
+      <div class="project-row">
+        <div class="scroll-track">
+          <figure class="project"><img src="img/PJ1.jpeg" class="project-thumbnail"></figure>
+          <figure class="project"><img src="IMG/PJ5.jpeg" class="project-thumbnail"></figure>
+          <figure class="project"><img src="img/PJ4.jpeg" class="project-thumbnail"></figure>
+          <figure class="project"><img src="img/PJ2.jpeg" class="project-thumbnail"></figure>
+          <figure class="project"><img src="img/PJ3.jpeg" class="project-thumbnail"></figure>
+          <!-- duplikat untuk infinity -->
+          <figure class="project"><img src="img/PJ1.jpeg" class="project-thumbnail"></figure>
+          <figure class="project"><img src="IMG/PJ5.jpeg" class="project-thumbnail"></figure>
+          <figure class="project"><img src="img/PJ4.jpeg" class="project-thumbnail"></figure>
+          <figure class="project"><img src="img/PJ2.jpeg" class="project-thumbnail"></figure>
+          <figure class="project"><img src="img/PJ3.jpeg" class="project-thumbnail"></figure>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!------------ PROFILE ------------>
+  <aside class="right-col">
+    <div class="profile-card">
+      <img src="imG/WhatsApp Image 2025-12-09 at 13.20.47.jpeg" alt="Foto profil">
+      <div class="name" style="margin-top:15px; font-weight:700;">Shellfya Nurul Arshy</div>
+
+      <section style="margin-top:25px;">
+        <h3 style="color:#00C6FF;">My Focus</h3>
+        <p style="color:#9AA8C4;">Menciptakan program bagus & fungsional.</p>
+      </section>
+
+      <section class="expertise-wrapper" style="margin-top:30px;">
+        <p>Expertise</p>
+        <div class="expertise-list">
+          <div class="tool">VSC</div>
+          <div class="tool">PYTHON</div>
+          <div class="tool">CSS</div>
+          <div class="tool">PHP</div>
+        </div>
+      </section>
+
+      <section style="margin-top:25px;">
+        <strong>Contact</strong>
+        <p>WhatsApp: 089696356544</p>
+        <p>Instagram: @epiipi_</p>
+      </section>
+    </div>
+  </aside>
+
+</main>
+
+<footer>© 2025 — Portfolio by Shellfya</footer>
+</div>
+</body>
+</html>
